@@ -156,71 +156,125 @@ def read_snippet(file_path: str, line_no: int, radius: int = 3) -> str:
     return "\n".join(snippet)
 
 
+def _call_gemini_with_retry(client, prompt: str, max_retries: int = 4) -> str:
+    """Call Gemini API with exponential backoff for rate-limit errors."""
+    import time
+
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model="gemini-2.0-flash",
+                contents=prompt,
+            )
+            return response.text.strip()
+        except Exception as e:
+            err = str(e)
+            if ("429" in err or "RESOURCE_EXHAUSTED" in err) and attempt < max_retries - 1:
+                # Free tier needs ~30s between retries
+                wait = 30 * (attempt + 1)  # 30s, 60s, 90s
+                print(f"  Rate limited, waiting {wait}s before retry {attempt + 2}/{max_retries}...")
+                time.sleep(wait)
+            else:
+                raise
+    return ""
+
+
+def _parse_gemini_json(raw: str):
+    """Extract and parse JSON from Gemini response text."""
+    text = raw.strip()
+    # Strip markdown code fences if present
+    text = re.sub(r"^```(?:json)?\s*", "", text)
+    text = re.sub(r"\s*```$", "", text).strip()
+    # Try to extract a JSON array first (batched), then a single object
+    arr_match = re.search(r"\[.*\]", text, re.DOTALL)
+    if arr_match:
+        try:
+            return json.loads(arr_match.group(0))
+        except json.JSONDecodeError:
+            pass
+    obj_match = re.search(r"\{.*\}", text, re.DOTALL)
+    if obj_match:
+        return json.loads(obj_match.group(0))
+    return json.loads(text)
+
+
 def gemini_triage(critical_candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         return []
     try:
-        import google.generativeai as genai  # type: ignore
+        from google import genai  # type: ignore
+        from google.genai import types  # type: ignore
     except Exception:
         return []
 
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    if not critical_candidates:
+        return []
 
-    triaged = []
-    for candidate in critical_candidates:
+    client = genai.Client(api_key=api_key)
+
+    # ── Build ONE batched prompt for ALL candidates ──
+    issue_blocks = []
+    for idx, candidate in enumerate(critical_candidates):
         cpp = candidate["cppcheck"]
         clang = candidate["clang"]
         snippet = read_snippet(cpp["file"], cpp["line"])
-        prompt = f"""
-You are a secure C code reviewer.
-Given two static analyzer findings for likely the same issue, provide:
-1) confidence score between 0 and 1
-2) brief explanation (2-4 sentences)
-3) concrete fix recommendation
+        issue_blocks.append(
+            f"--- Issue {idx + 1} ---\n"
+            f"Cppcheck: [{cpp['category']}] {cpp['message']} ({cpp['file']}:{cpp['line']})\n"
+            f"Clang:    [{clang['category']}] {clang['message']} ({clang['file']}:{clang['line']})\n"
+            f"Code:\n{snippet}"
+        )
 
-Cppcheck:
-- category: {cpp["category"]}
-- message: {cpp["message"]}
-- file: {cpp["file"]}
-- line: {cpp["line"]}
+    all_issues = "\n\n".join(issue_blocks)
+    prompt = f"""You are a secure C code reviewer.
+Below are {len(critical_candidates)} issues that were flagged by BOTH Cppcheck and Clang static analyzers.
+For EACH issue, provide: confidence (0-1), explanation (2-4 sentences), and a fix.
 
-Clang:
-- category: {clang["category"]}
-- message: {clang["message"]}
-- file: {clang["file"]}
-- line: {clang["line"]}
+{all_issues}
 
-Code snippet:
-{snippet}
+Return a JSON array with exactly {len(critical_candidates)} objects, one per issue, in order:
+[{{"confidence": 0.0, "explanation": "...", "fix": "..."}}, ...]
+Return ONLY the JSON array, no other text."""
 
-Return strict JSON only:
-{{"confidence": 0.0, "explanation": "...", "fix": "..."}}
-"""
-        try:
-            response = model.generate_content(prompt)
-            text = response.text.strip()
-            parsed = json.loads(text)
-            triaged.append(
-                {
-                    "cppcheck": cpp,
-                    "clang": clang,
-                    "gemini": parsed,
-                }
-            )
-        except Exception:
-            triaged.append(
-                {
-                    "cppcheck": cpp,
-                    "clang": clang,
-                    "gemini": {
-                        "confidence": None,
-                        "explanation": "Gemini parsing failed for this finding.",
-                        "fix": "Manual review required.",
-                    },
-                }
-            )
+    print(f"  Sending {len(critical_candidates)} candidates to Gemini in 1 batched request...")
+
+    triaged = []
+    try:
+        raw = _call_gemini_with_retry(client, prompt)
+        parsed = _parse_gemini_json(raw)
+
+        # Handle single-object response (if only 1 candidate)
+        if isinstance(parsed, dict):
+            parsed = [parsed]
+
+        for idx, candidate in enumerate(critical_candidates):
+            gemini_result = parsed[idx] if idx < len(parsed) else {
+                "confidence": None,
+                "explanation": "Gemini did not return a result for this issue.",
+                "fix": "Manual review required.",
+            }
+            triaged.append({
+                "cppcheck": candidate["cppcheck"],
+                "clang": candidate["clang"],
+                "gemini": gemini_result,
+            })
+        print(f"  Gemini triage complete for {len(triaged)} candidates.")
+
+    except Exception as e:
+        print(f"  Gemini API error: {e}")
+        # Fall back: attach error to all candidates
+        for candidate in critical_candidates:
+            triaged.append({
+                "cppcheck": candidate["cppcheck"],
+                "clang": candidate["clang"],
+                "gemini": {
+                    "confidence": None,
+                    "explanation": f"Gemini API error: {e}",
+                    "fix": "Manual review required.",
+                },
+            })
+
     return triaged
 
 

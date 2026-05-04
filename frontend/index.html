@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BugHunter — CS810 Static Analysis Dashboard</title>
+    <meta name="description" content="Gamified static analysis dashboard combining Cppcheck, Clang, and Gemini AI triage for C vulnerability detection.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ─── SIDEBAR ─── -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-icon" id="logo-mascot">🛡️</div>
+            <span class="logo-text">BugHunter</span>
+        </div>
+        <ul class="sidebar-nav">
+            <li>
+                <button class="nav-btn active" data-view="dashboard" id="nav-dashboard">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Dashboard</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-btn" data-view="critical" id="nav-critical">
+                    <span class="nav-icon">🔥</span>
+                    <span class="nav-label">Critical</span>
+                    <span class="nav-badge" id="badge-critical">0</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-btn" data-view="findings" id="nav-findings">
+                    <span class="nav-icon">🐛</span>
+                    <span class="nav-label">All Bugs</span>
+                    <span class="nav-badge" id="badge-findings">0</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-btn" data-view="gemini" id="nav-gemini">
+                    <span class="nav-icon">✨</span>
+                    <span class="nav-label">AI Triage</span>
+                </button>
+            </li>
+            <li>
+                <button class="nav-btn" data-view="files" id="nav-files">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-label">Files</span>
+                </button>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <div class="streak-card">
+                <span class="streak-fire">🔬</span>
+                <span class="streak-text">CS 810 Project</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ─── MAIN CONTENT ─── -->
+    <main id="main-content" class="main-content">
+
+        <!-- DASHBOARD VIEW -->
+        <section id="view-dashboard" class="view active">
+            <div class="view-header">
+                <h1 class="view-title">Dashboard</h1>
+                <p class="view-subtitle">Your code security overview</p>
+            </div>
+
+            <!-- XP / Stats Bar -->
+            <div class="xp-bar-container" id="xp-bar-container">
+                <div class="xp-label">
+                    <span class="xp-level" id="xp-level">Security Score</span>
+                    <span class="xp-value" id="xp-value">—</span>
+                </div>
+                <div class="xp-track">
+                    <div class="xp-fill" id="xp-fill" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="stat-grid" id="stat-grid">
+                <div class="stat-card stat-card--green" id="stat-files">
+                    <div class="stat-number" id="stat-files-num">—</div>
+                    <div class="stat-label">Files Scanned</div>
+                    <div class="stat-icon">📄</div>
+                </div>
+                <div class="stat-card stat-card--blue" id="stat-cppcheck">
+                    <div class="stat-number" id="stat-cppcheck-num">—</div>
+                    <div class="stat-label">Cppcheck Findings</div>
+                    <div class="stat-icon">🔍</div>
+                </div>
+                <div class="stat-card stat-card--purple" id="stat-clang">
+                    <div class="stat-number" id="stat-clang-num">—</div>
+                    <div class="stat-label">Clang Findings</div>
+                    <div class="stat-icon">⚙️</div>
+                </div>
+                <div class="stat-card stat-card--red" id="stat-critical">
+                    <div class="stat-number" id="stat-critical-num">—</div>
+                    <div class="stat-label">Critical Candidates</div>
+                    <div class="stat-icon">🚨</div>
+                </div>
+            </div>
+
+            <!-- Breakdown Chart -->
+            <div class="card" id="severity-breakdown-card">
+                <h2 class="card-title">Severity Breakdown</h2>
+                <div class="severity-bars" id="severity-bars"></div>
+            </div>
+
+            <!-- File Heatmap -->
+            <div class="card" id="file-heatmap-card">
+                <h2 class="card-title">Bug Heatmap by File</h2>
+                <div class="heatmap-grid" id="heatmap-grid"></div>
+            </div>
+        </section>
+
+        <!-- CRITICAL VIEW -->
+        <section id="view-critical" class="view">
+            <div class="view-header">
+                <h1 class="view-title">🔥 Critical Candidates</h1>
+                <p class="view-subtitle">Bugs confirmed by <strong>both</strong> analyzers — highest confidence</p>
+            </div>
+            <div class="findings-list" id="critical-list"></div>
+        </section>
+
+        <!-- ALL FINDINGS VIEW -->
+        <section id="view-findings" class="view">
+            <div class="view-header">
+                <h1 class="view-title">🐛 All Findings</h1>
+                <p class="view-subtitle">Every issue detected across both tools</p>
+            </div>
+            <div class="filter-bar" id="filter-bar">
+                <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+                <button class="filter-btn" data-filter="error" id="filter-error">Errors</button>
+                <button class="filter-btn" data-filter="warning" id="filter-warning">Warnings</button>
+                <button class="filter-btn" data-filter="style" id="filter-style">Style</button>
+                <button class="filter-btn" data-filter="cppcheck" id="filter-cppcheck">Cppcheck</button>
+                <button class="filter-btn" data-filter="clang" id="filter-clang">Clang</button>
+            </div>
+            <div class="findings-list" id="findings-list"></div>
+        </section>
+
+        <!-- GEMINI VIEW -->
+        <section id="view-gemini" class="view">
+            <div class="view-header">
+                <h1 class="view-title">✨ Gemini AI Triage</h1>
+                <p class="view-subtitle">AI-powered root cause analysis and fix suggestions</p>
+            </div>
+            <div id="gemini-content"></div>
+        </section>
+
+        <!-- FILES VIEW -->
+        <section id="view-files" class="view">
+            <div class="view-header">
+                <h1 class="view-title">📁 Source Files</h1>
+                <p class="view-subtitle">Analyzed C source files with inline annotations</p>
+            </div>
+            <div class="file-cards" id="file-cards"></div>
+            <div class="code-viewer-container" id="code-viewer-container" style="display:none;">
+                <div class="code-viewer-header">
+                    <span class="code-viewer-filename" id="code-viewer-filename"></span>
+                    <button class="btn-close-viewer" id="btn-close-viewer">✕</button>
+                </div>
+                <pre class="code-viewer" id="code-viewer"></pre>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ─── SOURCE CODE MODAL ─── -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">Source Code</h3>
+                <button class="modal-close" id="modal-close">✕</button>
+            </div>
+            <div class="modal-body" id="modal-body"></div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
