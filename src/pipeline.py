@@ -18,12 +18,14 @@ class Finding:
     message: str
 
 
-def discover_c_files(input_path: Path) -> List[Path]:
-    if input_path.is_file() and input_path.suffix == ".c":
-        return [input_path]
-    if input_path.is_dir():
-        return sorted(input_path.rglob("*.c"))
-    return []
+def discover_c_files(path: Path) -> List[Path]:
+    valid_exts = {".c", ".cpp", ".cc", ".cxx", ".h", ".hpp"}
+    if path.is_file() and path.suffix in valid_exts:
+        return [path]
+    files = []
+    for ext in valid_exts:
+        files.extend(path.rglob(f"*{ext}"))
+    return sorted(files)
 
 
 def run_cppcheck(files: List[Path]) -> str:
@@ -41,22 +43,30 @@ def run_cppcheck(files: List[Path]) -> str:
 
 def parse_cppcheck_output(raw: str) -> List[Finding]:
     findings: List[Finding] = []
+    # Regex handles Windows absolute paths (C:\...) and relative paths
+    # Format: <file>:<line>:<severity>:<id>:<message>
+    # The file part may contain a drive letter colon like C:\path
+    pattern = re.compile(
+        r'^(?P<file>.+?):(?P<line>\d+):(?P<severity>[a-z]+):(?P<id>[^:]+):(?P<message>.+)$'
+    )
     for line in raw.splitlines():
-        # Expected format: file:line:severity:id:message
-        parts = line.split(":", 4)
-        if len(parts) < 5:
+        # Strip Windows "cppcheck : " prefix
+        line = re.sub(r'^cppcheck\s*:\s*', '', line.strip())
+        m = pattern.match(line)
+        if not m:
             continue
-        file_path, line_no, severity, category, message = parts
-        if not line_no.isdigit():
+        severity = m.group('severity').strip()
+        # Skip non-bug informational lines
+        if severity == 'information':
             continue
         findings.append(
             Finding(
                 tool="cppcheck",
-                file=str(Path(file_path)),
-                line=int(line_no),
-                severity=severity.strip(),
-                category=category.strip(),
-                message=message.strip(),
+                file=str(Path(m.group('file').strip())),
+                line=int(m.group('line')),
+                severity=severity,
+                category=m.group('id').strip(),
+                message=m.group('message').strip(),
             )
         )
     return findings
@@ -102,14 +112,35 @@ def parse_clang_output(raw: str) -> List[Finding]:
 def category_compatible(cat_a: str, cat_b: str) -> bool:
     a = cat_a.lower()
     b = cat_b.lower()
-    keywords = ["null", "buffer", "overflow", "bounds", "uninit", "memory", "leak"]
-    return any(k in a and k in b for k in keywords) or a == b
+    # Shared keyword in both category names -> compatible
+    keywords = [
+        "null", "buffer", "overflow", "bounds", "uninit", "memory",
+        "leak", "divide", "zero", "free", "scope", "format", "string",
+        "deref", "pointer", "integer", "sign",
+    ]
+    if any(k in a and k in b for k in keywords):
+        return True
+    # Cross-tool keyword mapping (cppcheck term -> clang term)
+    mappings = [
+        ("zerodiv",           "dividezero"),
+        ("nullpointer",       "nulldereference"),
+        ("uninitvar",         "uninitializedvalue"),
+        ("bufferaccess",      "arraybound"),
+        ("memleak",           "memoryleak"),
+        ("danglingpointer",   "deadcode"),
+    ]
+    for cpp_kw, clang_kw in mappings:
+        if cpp_kw in a and clang_kw in b:
+            return True
+        if clang_kw in a and cpp_kw in b:
+            return True
+    return False
 
 
 def match_findings(
     cppcheck_findings: List[Finding],
     clang_findings: List[Finding],
-    line_window: int = 2,
+    line_window: int = 5,
 ) -> Dict[str, Any]:
     matched = []
     cpp_only = []
@@ -160,22 +191,29 @@ def _call_gemini_with_retry(client, prompt: str, max_retries: int = 4) -> str:
     """Call Gemini API with exponential backoff for rate-limit errors."""
     import time
 
+    # Using gemini-flash-latest which is widely available and supported on the free tier
+    model_name = "gemini-flash-latest"
+    
     for attempt in range(max_retries):
         try:
             response = client.models.generate_content(
-                model="gemini-2.0-flash",
+                model=model_name,
                 contents=prompt,
             )
+            if not response or not response.text:
+                raise ValueError("Empty response from Gemini")
             return response.text.strip()
         except Exception as e:
             err = str(e)
-            if ("429" in err or "RESOURCE_EXHAUSTED" in err) and attempt < max_retries - 1:
-                # Free tier needs ~30s between retries
-                wait = 30 * (attempt + 1)  # 30s, 60s, 90s
-                print(f"  Rate limited, waiting {wait}s before retry {attempt + 2}/{max_retries}...")
+            # Handle rate limits (429) or overloaded (503)
+            if ("429" in err or "RESOURCE_EXHAUSTED" in err or "503" in err) and attempt < max_retries - 1:
+                wait = 15 * (attempt + 1)
+                print(f"  Gemini busy/rate-limited, waiting {wait}s before retry {attempt + 2}/{max_retries}...")
                 time.sleep(wait)
             else:
-                raise
+                print(f"  Gemini error on attempt {attempt + 1}: {err}")
+                if attempt == max_retries - 1:
+                    raise
     return ""
 
 
@@ -282,11 +320,74 @@ def ensure_parent_dir(path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
 
 
+def gemini_triage_single(findings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        return []
+    try:
+        from google import genai
+    except Exception:
+        return []
+
+    if not findings:
+        return []
+
+    client = genai.Client(api_key=api_key)
+
+    issue_blocks = []
+    for idx, finding in enumerate(findings):
+        snippet = read_snippet(finding["file"], finding["line"])
+        issue_blocks.append(
+            f"--- Issue {idx + 1} ---\n"
+            f"Tool: {finding['tool']}\n"
+            f"Severity: {finding['severity']}\n"
+            f"Category: {finding['category']}\n"
+            f"Message: {finding['message']}\n"
+            f"Code:\n{snippet}"
+        )
+
+    all_issues = "\n\n".join(issue_blocks)
+    prompt = f"""You are a secure C code reviewer.
+Below are {len(findings)} issues flagged by a static analyzer.
+For EACH issue, provide: confidence (0-1), explanation (2-4 sentences), and a fix.
+
+{all_issues}
+
+Return a JSON array with exactly {len(findings)} objects, one per issue, in order:
+[{{"confidence": 0.0, "explanation": "...", "fix": "..."}}, ...]
+Return ONLY the JSON array, no other text."""
+
+    print(f"  Sending {len(findings)} single-tool findings to Gemini...")
+
+    triaged = []
+    try:
+        raw = _call_gemini_with_retry(client, prompt)
+        parsed = _parse_gemini_json(raw)
+
+        if isinstance(parsed, dict):
+            parsed = [parsed]
+
+        for idx, finding in enumerate(findings):
+            gemini_result = parsed[idx] if idx < len(parsed) else {
+                "confidence": None,
+                "explanation": "Gemini did not return a result for this issue.",
+                "fix": "Manual review required.",
+            }
+            triaged.append({
+                "cppcheck": finding if finding["tool"] == "cppcheck" else finding,  # Dummy mapping for compatibility with UI
+                "clang": finding if finding["tool"] == "clang" else finding,      # Dummy mapping
+                "is_single": True,
+                "gemini": gemini_result,
+            })
+    except Exception as e:
+        print(f"  Gemini API error: {e}")
+    return triaged
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="CS 810 Static Analysis Pipeline Baseline")
     parser.add_argument("--input", required=True, help="C file or directory")
     parser.add_argument("--output", required=True, help="Output JSON report path")
-    parser.add_argument("--line-window", type=int, default=2, help="Line match tolerance")
+    parser.add_argument("--line-window", type=int, default=5, help="Line match tolerance")
     parser.add_argument("--use-gemini", action="store_true", help="Enable Gemini triage")
     args = parser.parse_args()
 
@@ -313,13 +414,28 @@ def main() -> None:
     }
 
     if args.use_gemini:
-        report["gemini_triage"] = gemini_triage(fused["critical_candidates"])
+        # Triage critical candidates (matched by both tools)
+        triaged_critical = gemini_triage(fused["critical_candidates"])
+        
+        # If the user has no critical bugs, only triage a maximum of 2 single bugs 
+        # to keep the API call extremely fast and light.
+        triaged_singles = []
+        if not triaged_critical:
+            singles = [f for f in fused["cppcheck_only"] + fused["clang_only"] 
+                       if f.get("severity") in ("error", "warning")]
+            
+            singles.sort(key=lambda x: 0 if x.get("severity") == "error" else 1)
+            triaged_singles = gemini_triage_single(singles[:2])
+            
+        report["gemini_triage"] = triaged_critical + triaged_singles
+        
+        if not report["gemini_triage"]:
+            print("  [INFO] No significant bugs found to triage with AI.")
 
     out_path = Path(args.output)
     ensure_parent_dir(out_path)
     out_path.write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(f"Report written to: {out_path}")
-
 
 if __name__ == "__main__":
     main()

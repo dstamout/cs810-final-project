@@ -1,0 +1,478 @@
+{
+  "meta": {
+    "input": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306",
+    "file_count": 8,
+    "cppcheck_count": 38,
+    "clang_count": 10,
+    "critical_candidate_count": 3
+  },
+  "findings": {
+    "critical_candidates": [
+      {
+        "cppcheck": {
+          "tool": "cppcheck",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+          "line": 12,
+          "severity": "error",
+          "category": "zerodiv",
+          "message": "Division by zero."
+        },
+        "clang": {
+          "tool": "clang",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+          "line": 12,
+          "severity": "warning",
+          "category": "core.DivideZero",
+          "message": "Division by zero"
+        }
+      },
+      {
+        "cppcheck": {
+          "tool": "cppcheck",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\null_deref.c",
+          "line": 8,
+          "severity": "error",
+          "category": "nullPointer",
+          "message": "Null pointer dereference: p"
+        },
+        "clang": {
+          "tool": "clang",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\null_deref.c",
+          "line": 8,
+          "severity": "warning",
+          "category": "core.NullDereference",
+          "message": "Dereference of null pointer (loaded from variable 'p')"
+        }
+      },
+      {
+        "cppcheck": {
+          "tool": "cppcheck",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+          "line": 9,
+          "severity": "warning",
+          "category": "uninitvar",
+          "message": "Uninitialized variable: result"
+        },
+        "clang": {
+          "tool": "clang",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+          "line": 9,
+          "severity": "warning",
+          "category": "core.uninitialized.UndefReturn",
+          "message": "Undefined or garbage value returned to caller"
+        }
+      }
+    ],
+    "cppcheck_only": [
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\buffer_overflow.c",
+        "line": 7,
+        "severity": "error",
+        "category": "bufferAccessOutOfBounds",
+        "message": "Buffer is accessed out of bounds: small"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 12,
+        "severity": "error",
+        "category": "bufferAccessOutOfBounds",
+        "message": "Buffer is accessed out of bounds: dest"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 18,
+        "severity": "warning",
+        "category": "getsCalled",
+        "message": "Obsolete function 'gets' called. It is recommended to use 'fgets' or 'gets_s' instead."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 5,
+        "severity": "style",
+        "category": "constParameterPointer",
+        "message": "Parameter 'user_input' can be declared as pointer to const"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 10,
+        "severity": "style",
+        "category": "constParameterPointer",
+        "message": "Parameter 'src' can be declared as pointer to const"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 18,
+        "severity": "style",
+        "category": "compareValueOutOfTypeRangeError",
+        "message": "Comparing expression of type 'signed char' against value 200. Condition is always true."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 6,
+        "severity": "error",
+        "category": "integerOverflow",
+        "message": "Signed integer overflow for expression 'n*2'."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 15,
+        "severity": "error",
+        "category": "memleak",
+        "message": "Memory leak: data"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 23,
+        "severity": "error",
+        "category": "memleak",
+        "message": "Memory leak: p"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 21,
+        "severity": "style",
+        "category": "constVariablePointer",
+        "message": "Variable 'p' can be declared as pointer to const"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 13,
+        "severity": "style",
+        "category": "unusedAllocatedMemory",
+        "message": "Variable 'data' is allocated memory that is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 21,
+        "severity": "style",
+        "category": "unreadVariable",
+        "message": "Variable 'p' is assigned a value that is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 21,
+        "severity": "style",
+        "category": "unusedAllocatedMemory",
+        "message": "Variable 'p' is allocated memory that is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\null_deref.c",
+        "line": 5,
+        "severity": "style",
+        "category": "knownConditionTrueFalse",
+        "message": "Condition 'p==NULL' is always true"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 15,
+        "severity": "error",
+        "category": "uninitvar",
+        "message": "Uninitialized variable: ptr"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 14,
+        "severity": "style",
+        "category": "unassignedVariable",
+        "message": "Variable 'ptr' is not assigned a value."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 9,
+        "severity": "error",
+        "category": "deallocuse",
+        "message": "Dereferencing 'p' after it is deallocated / released"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 18,
+        "severity": "error",
+        "category": "doubleFree",
+        "message": "Memory pointed to by 'buf' is freed twice."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 7,
+        "severity": "warning",
+        "category": "nullPointerOutOfMemory",
+        "message": "If memory allocation fails, then there is a possible null pointer dereference: p"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 14,
+        "severity": "style",
+        "category": "unusedAllocatedMemory",
+        "message": "Variable 'buf' is allocated memory that is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_scope.c",
+        "line": 5,
+        "severity": "error",
+        "category": "returnDanglingLifetime",
+        "message": "Returning pointer to local variable 'local' that will be invalid when returning."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_scope.c",
+        "line": 9,
+        "severity": "style",
+        "category": "constVariablePointer",
+        "message": "Variable 'p' can be declared as pointer to const"
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 16,
+        "severity": "style",
+        "category": "unusedFunction",
+        "message": "The function 'read_input' is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 5,
+        "severity": "style",
+        "category": "unusedFunction",
+        "message": "The function 'create_buffer' is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 12,
+        "severity": "style",
+        "category": "unusedFunction",
+        "message": "The function 'leak_on_error' is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 13,
+        "severity": "style",
+        "category": "unusedFunction",
+        "message": "The function 'bad_pointer_use' is never used."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 5,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'log_message' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\format_string.c",
+        "line": 10,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'unsafe_copy' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 4,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'integer_overflow_alloc' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 11,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'divide' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 16,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'overflow_loop' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 4,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'compute' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 5,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'use_after_free_example' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 13,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'double_free_example' should have static linkage since it is not used outside of its translation unit."
+      },
+      {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_scope.c",
+        "line": 3,
+        "severity": "style",
+        "category": "staticFunction",
+        "message": "The function 'bad_pointer' should have static linkage since it is not used outside of its translation unit."
+      }
+    ],
+    "clang_only": [
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 15,
+        "severity": "warning",
+        "category": "unix.Malloc",
+        "message": "Potential leak of memory pointed to by 'data'"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 21,
+        "severity": "warning",
+        "category": "deadcode.DeadStores",
+        "message": "Value stored to 'p' during its initialization is never read"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\memory_leak.c",
+        "line": 23,
+        "severity": "warning",
+        "category": "unix.Malloc",
+        "message": "Potential leak of memory pointed to by 'p'"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 15,
+        "severity": "warning",
+        "category": "core.NullDereference",
+        "message": "Dereference of undefined pointer value (loaded from variable 'ptr')"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 9,
+        "severity": "warning",
+        "category": "unix.Malloc",
+        "message": "Use of memory after it is released"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_free.c",
+        "line": 18,
+        "severity": "warning",
+        "category": "unix.Malloc",
+        "message": "Attempt to release already released memory"
+      },
+      {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\use_after_scope.c",
+        "line": 5,
+        "severity": "warning",
+        "category": "core.StackAddressEscape",
+        "message": "Address of stack memory associated with local variable 'local' returned to caller"
+      }
+    ]
+  },
+  "gemini_triage": [
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 12,
+        "severity": "error",
+        "category": "zerodiv",
+        "message": "Division by zero."
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\integer_overflow.c",
+        "line": 12,
+        "severity": "warning",
+        "category": "core.DivideZero",
+        "message": "Division by zero"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The function performs integer division without verifying that the divisor 'b' is non-zero. If 'b' is zero, the operation results in undefined behavior, typically causing the program to terminate with a floating-point exception.",
+        "fix": "int divide(int a, int b) {\n    if (b == 0) return 0; // Return a default value or handle error\n    return a / b;\n}"
+      }
+    },
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\null_deref.c",
+        "line": 8,
+        "severity": "error",
+        "category": "nullPointer",
+        "message": "Null pointer dereference: p"
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\null_deref.c",
+        "line": 8,
+        "severity": "warning",
+        "category": "core.NullDereference",
+        "message": "Dereference of null pointer (loaded from variable 'p')"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The code explicitly checks if 'p' is NULL but fails to halt execution or skip the assignment when the condition is met. This results in an intentional null pointer dereference immediately after the check, leading to a segmentation fault.",
+        "fix": "if (p == NULL) {\n    printf(\"Pointer is null\\n\");\n    return -1; // Exit early to prevent dereference\n}\n*p = 42;\nreturn 0;"
+      }
+    },
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 9,
+        "severity": "warning",
+        "category": "uninitvar",
+        "message": "Uninitialized variable: result"
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\d1d83b1f-f31a-46d5-93c1-ae4eb4a91306\\uninitialized_var.c",
+        "line": 9,
+        "severity": "warning",
+        "category": "core.uninitialized.UndefReturn",
+        "message": "Undefined or garbage value returned to caller"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The variable 'result' is only assigned a value if 'flag' is greater than zero. If the condition is false, the function returns an uninitialized local variable, which contains indeterminate data and leads to undefined behavior.",
+        "fix": "int result = 0; // Initialize with a default value\nif (flag > 0) {\n    result = flag * 2;\n}\nreturn result;"
+      }
+    }
+  ]
+}

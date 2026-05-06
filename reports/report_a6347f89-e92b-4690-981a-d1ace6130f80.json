@@ -1,17 +1,35 @@
 {
   "meta": {
-    "input": "samples",
+    "input": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80",
     "file_count": 8,
-    "cppcheck_count": 39,
+    "cppcheck_count": 38,
     "clang_count": 10,
-    "critical_candidate_count": 2
+    "critical_candidate_count": 3
   },
   "findings": {
     "critical_candidates": [
       {
         "cppcheck": {
           "tool": "cppcheck",
-          "file": "samples\\null_deref.c",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
+          "line": 12,
+          "severity": "error",
+          "category": "zerodiv",
+          "message": "Division by zero."
+        },
+        "clang": {
+          "tool": "clang",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
+          "line": 12,
+          "severity": "warning",
+          "category": "core.DivideZero",
+          "message": "Division by zero"
+        }
+      },
+      {
+        "cppcheck": {
+          "tool": "cppcheck",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\null_deref.c",
           "line": 8,
           "severity": "error",
           "category": "nullPointer",
@@ -19,7 +37,7 @@
         },
         "clang": {
           "tool": "clang",
-          "file": "samples\\null_deref.c",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\null_deref.c",
           "line": 8,
           "severity": "warning",
           "category": "core.NullDereference",
@@ -29,7 +47,7 @@
       {
         "cppcheck": {
           "tool": "cppcheck",
-          "file": "samples\\uninitialized_var.c",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
           "line": 9,
           "severity": "warning",
           "category": "uninitvar",
@@ -37,7 +55,7 @@
         },
         "clang": {
           "tool": "clang",
-          "file": "samples\\uninitialized_var.c",
+          "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
           "line": 9,
           "severity": "warning",
           "category": "core.uninitialized.UndefReturn",
@@ -48,7 +66,7 @@
     "cppcheck_only": [
       {
         "tool": "cppcheck",
-        "file": "samples\\buffer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\buffer_overflow.c",
         "line": 7,
         "severity": "error",
         "category": "bufferAccessOutOfBounds",
@@ -56,7 +74,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 12,
         "severity": "error",
         "category": "bufferAccessOutOfBounds",
@@ -64,7 +82,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 18,
         "severity": "warning",
         "category": "getsCalled",
@@ -72,7 +90,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 5,
         "severity": "style",
         "category": "constParameterPointer",
@@ -80,7 +98,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 10,
         "severity": "style",
         "category": "constParameterPointer",
@@ -88,7 +106,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
         "line": 18,
         "severity": "style",
         "category": "compareValueOutOfTypeRangeError",
@@ -96,15 +114,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
-        "line": 12,
-        "severity": "error",
-        "category": "zerodiv",
-        "message": "Division by zero."
-      },
-      {
-        "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
         "line": 6,
         "severity": "error",
         "category": "integerOverflow",
@@ -112,7 +122,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 15,
         "severity": "error",
         "category": "memleak",
@@ -120,7 +130,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 23,
         "severity": "error",
         "category": "memleak",
@@ -128,7 +138,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 21,
         "severity": "style",
         "category": "constVariablePointer",
@@ -136,7 +146,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 13,
         "severity": "style",
         "category": "unusedAllocatedMemory",
@@ -144,7 +154,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 21,
         "severity": "style",
         "category": "unreadVariable",
@@ -152,7 +162,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 21,
         "severity": "style",
         "category": "unusedAllocatedMemory",
@@ -160,7 +170,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\null_deref.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\null_deref.c",
         "line": 5,
         "severity": "style",
         "category": "knownConditionTrueFalse",
@@ -168,7 +178,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\uninitialized_var.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
         "line": 15,
         "severity": "error",
         "category": "uninitvar",
@@ -176,7 +186,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\uninitialized_var.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
         "line": 14,
         "severity": "style",
         "category": "unassignedVariable",
@@ -184,7 +194,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 9,
         "severity": "error",
         "category": "deallocuse",
@@ -192,7 +202,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 18,
         "severity": "error",
         "category": "doubleFree",
@@ -200,7 +210,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 7,
         "severity": "warning",
         "category": "nullPointerOutOfMemory",
@@ -208,7 +218,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 14,
         "severity": "style",
         "category": "unusedAllocatedMemory",
@@ -216,7 +226,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_scope.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_scope.c",
         "line": 5,
         "severity": "error",
         "category": "returnDanglingLifetime",
@@ -224,7 +234,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_scope.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_scope.c",
         "line": 9,
         "severity": "style",
         "category": "constVariablePointer",
@@ -232,7 +242,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 16,
         "severity": "style",
         "category": "unusedFunction",
@@ -240,7 +250,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 5,
         "severity": "style",
         "category": "unusedFunction",
@@ -248,7 +258,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 12,
         "severity": "style",
         "category": "unusedFunction",
@@ -256,7 +266,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\uninitialized_var.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
         "line": 13,
         "severity": "style",
         "category": "unusedFunction",
@@ -264,7 +274,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 5,
         "severity": "style",
         "category": "staticFunction",
@@ -272,7 +282,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\format_string.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\format_string.c",
         "line": 10,
         "severity": "style",
         "category": "staticFunction",
@@ -280,7 +290,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
         "line": 4,
         "severity": "style",
         "category": "staticFunction",
@@ -288,7 +298,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
         "line": 11,
         "severity": "style",
         "category": "staticFunction",
@@ -296,7 +306,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\integer_overflow.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
         "line": 16,
         "severity": "style",
         "category": "staticFunction",
@@ -304,7 +314,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\uninitialized_var.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
         "line": 4,
         "severity": "style",
         "category": "staticFunction",
@@ -312,7 +322,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 5,
         "severity": "style",
         "category": "staticFunction",
@@ -320,7 +330,7 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 13,
         "severity": "style",
         "category": "staticFunction",
@@ -328,33 +338,17 @@
       },
       {
         "tool": "cppcheck",
-        "file": "samples\\use_after_scope.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_scope.c",
         "line": 3,
         "severity": "style",
         "category": "staticFunction",
         "message": "The function 'bad_pointer' should have static linkage since it is not used outside of its translation unit."
-      },
-      {
-        "tool": "cppcheck",
-        "file": "nofile",
-        "line": 0,
-        "severity": "information",
-        "category": "checkersReport",
-        "message": "Active checkers: 113/186 (use --checkers-report=<filename> to see details)"
       }
     ],
     "clang_only": [
       {
         "tool": "clang",
-        "file": "samples\\integer_overflow.c",
-        "line": 12,
-        "severity": "warning",
-        "category": "core.DivideZero",
-        "message": "Division by zero"
-      },
-      {
-        "tool": "clang",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 15,
         "severity": "warning",
         "category": "unix.Malloc",
@@ -362,7 +356,7 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 21,
         "severity": "warning",
         "category": "deadcode.DeadStores",
@@ -370,7 +364,7 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\memory_leak.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\memory_leak.c",
         "line": 23,
         "severity": "warning",
         "category": "unix.Malloc",
@@ -378,7 +372,7 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\uninitialized_var.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
         "line": 15,
         "severity": "warning",
         "category": "core.NullDereference",
@@ -386,7 +380,7 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 9,
         "severity": "warning",
         "category": "unix.Malloc",
@@ -394,7 +388,7 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\use_after_free.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_free.c",
         "line": 18,
         "severity": "warning",
         "category": "unix.Malloc",
@@ -402,12 +396,83 @@
       },
       {
         "tool": "clang",
-        "file": "samples\\use_after_scope.c",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\use_after_scope.c",
         "line": 5,
         "severity": "warning",
         "category": "core.StackAddressEscape",
         "message": "Address of stack memory associated with local variable 'local' returned to caller"
       }
     ]
-  }
+  },
+  "gemini_triage": [
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
+        "line": 12,
+        "severity": "error",
+        "category": "zerodiv",
+        "message": "Division by zero."
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\integer_overflow.c",
+        "line": 12,
+        "severity": "warning",
+        "category": "core.DivideZero",
+        "message": "Division by zero"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The function performs a division operation without checking if the divisor 'b' is zero. If the caller passes 0 for 'b', the program will encounter a division-by-zero error, leading to undefined behavior or a runtime crash.",
+        "fix": "int divide(int a, int b) {\n    if (b == 0) return 0; // Or handle error appropriately\n    return a / b;\n}"
+      }
+    },
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\null_deref.c",
+        "line": 8,
+        "severity": "error",
+        "category": "nullPointer",
+        "message": "Null pointer dereference: p"
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\null_deref.c",
+        "line": 8,
+        "severity": "warning",
+        "category": "core.NullDereference",
+        "message": "Dereference of null pointer (loaded from variable 'p')"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The code explicitly detects if 'p' is NULL but continues to dereference it regardless of the check. This results in a guaranteed null pointer dereference and a crash whenever 'p' is actually NULL.",
+        "fix": "if (p == NULL) {\n    printf(\"Pointer is null\\n\");\n    return -1;\n}\n*p = 42;\nreturn 0;"
+      }
+    },
+    {
+      "cppcheck": {
+        "tool": "cppcheck",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
+        "line": 9,
+        "severity": "warning",
+        "category": "uninitvar",
+        "message": "Uninitialized variable: result"
+      },
+      "clang": {
+        "tool": "clang",
+        "file": "C:\\Users\\clenc\\cs810-final-project\\uploads\\a6347f89-e92b-4690-981a-d1ace6130f80\\uninitialized_var.c",
+        "line": 9,
+        "severity": "warning",
+        "category": "core.uninitialized.UndefReturn",
+        "message": "Undefined or garbage value returned to caller"
+      },
+      "gemini": {
+        "confidence": 1.0,
+        "explanation": "The variable 'result' is declared but not initialized. If the 'flag > 0' condition is false, the function returns 'result' while it still contains an indeterminate garbage value from the stack, causing undefined behavior.",
+        "fix": "int result = 0;\nif (flag > 0) {\n    result = flag * 2;\n}\nreturn result;"
+      }
+    }
+  ]
 }
