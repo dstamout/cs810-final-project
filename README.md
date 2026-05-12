@@ -65,7 +65,7 @@ Example:
 
 ## Suggested Work Split
 - **Dimitrios**: pipeline integration + report generation
-- **Michael**: benchmark program set + ground truth labeling
+- **Michael**: benchmark program set + ground truth labeling (presentation)
 - **Christian**: Gemini prompt engineering + evaluation write-up
 
 ## Notes
