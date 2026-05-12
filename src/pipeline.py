@@ -218,7 +218,7 @@ def _call_gemini_with_retry(client, prompt: str, max_retries: int = 4) -> str:
 
 
 def _parse_gemini_json(raw: str):
-    """Extract and parse JSON from Gemini response text."""
+    """Extract and parse the JSON from Gemini response text"""
     text = raw.strip()
     # Strip markdown code fences if present
     text = re.sub(r"^```(?:json)?\s*", "", text)
